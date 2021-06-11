@@ -22,16 +22,6 @@ return [
     // 'password'        => 'root',
     // // 端口
     // 'hostport'        => '',
-    // 服务器地址
-            'hostname'        => 'gz-cynosdbmysql-grp-ewpzcxax.sql.tencentcdb.com',
-            // 数据库名
-            'database'        => 'admin_v6',
-            // 用户名
-            'username'        => 'root',
-            // 密码
-            'password'        => 'zzf199407.',
-            // 端口
-            'hostport'        => '26392',
     // 连接dsn
     'dsn'             => '',
     // 数据库连接参数
