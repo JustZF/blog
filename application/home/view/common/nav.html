@@ -1,0 +1,91 @@
+<div class="layui-row nav layui-container">
+    <!--电脑导航-->
+    <ul class="layui-nav layui-hide-xs ">
+        <li class="layui-nav-item" lay-unselect><a href="/" class="logo">Just个人博客</a></li>
+        {foreach name="cat_list" item="v"}
+        <li class="layui-nav-item {if ( isset($cat_id) && $cat_id==$v.id)}layui-this{/if}">
+            <a href="{:url('index/cat',['cat_id'=>$v.id])}">{$v.name}</a>
+            {if (!empty($v['child']))}
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                {foreach name="v.child" item="vv"}
+                <dd class="{if ( isset($cat_id) && $cat_id==$vv.id)}layui-this{/if}"><a
+                        href="{:url('index/cat',['cat_id'=>$vv.id])}">{$vv.name}</a>
+                </dd>
+                {/foreach}
+            </dl>
+            {/if}
+        </li>
+        {/foreach}
+        {for start="0" end="{:count($cat_list1)}"}
+
+        {/for}
+        <li class="layui-nav-item {if ('leaveword'==request()->action())}layui-this{/if}"><a
+                href="{:url('comment/leaveWord')}">留言</a></li>
+    </ul>
+    <ul class="layui-nav layui-layout-right layui-hide-xs">
+        {if ($Think.session.user_id)}
+        <li class="layui-nav-item">
+            <a href="javascript:;">
+                <img src="{$Think.session.head_img}" class="layui-nav-img" style="margin-right: unset;">
+                {$Think.session.nickname}
+            </a>
+            <dl class="layui-nav-child">
+                <!--<dd><a href="">基本资料</a></dd>-->
+                <dd><a href="{:url('user/logout')}">注销</a></dd>
+            </dl>
+        </li>
+        {else/}
+        <li class="layui-nav-item" id="pc-nav-login" lay-unselect>
+            <a href="javascript:void(0);">
+                <span><img src="__IMG__/login-gray.svg" class="login_icon">登录</span>
+            </a>
+        </li>
+        {/if}
+    </ul>
+    <!--手机导航-->
+    <ul class="layui-nav layui-hide-sm">
+        <li class="layui-nav-item"><a href="/" class="logo" style="padding-left: 0;">Just个人博客</a></li>
+    </ul>
+    <ul class="layui-nav layui-nav-tree layui-hide-sm phone-nav">
+        {foreach name="cat_list" item="v"}
+        <li class="layui-nav-item {if ( isset($cat_id) && $cat_id==$v.id)}layui-this{/if}">
+            {if (!empty($v['child']))}
+            <a href="javascript:void(0);">{$v.name}</a>
+            <dl class="layui-nav-child">
+                <dd><a href="{:url('index/cat',['cat_id'=>$v.id])}">查看全部</a></dd>
+                {foreach name="v.child" item="vv"}
+                <dd class="{if ( isset($cat_id) && $cat_id==$vv.id)}layui-this{/if}"><a
+                        href="{:url('index/cat',['cat_id'=>$vv.id])}">{$vv.name}</a>
+                </dd>
+                {/foreach}
+            </dl>
+            {else/}
+            <a href="{:url('index/cat',['cat_id'=>$v.id])}">{$v.name}</a>
+            {/if}
+        </li>
+        {/foreach}
+        <li class="layui-nav-item {if ('leaveword'==request()->action())}layui-this{/if}"><a
+                href="{:url('comment/leaveWord')}">留言</a></li>
+    </ul>
+    <ul class="layui-nav layui-layout-right layui-hide-sm">
+        {if ($Request.session.user_id)}
+        <li class="layui-nav-item phone-nav-icon" lay-unselect style="margin-right: 15px;">
+            <a href="javascript:;">
+                <img src="{$Think.session.head_img}" class="layui-nav-img" style="margin-right: unset;">
+            </a>
+            <dl class="layui-nav-child">
+                <!--<dd><a href="">基本资料</a></dd>-->
+                <dd><a href="{:url('user/logout')}">注销</a></dd>
+            </dl>
+        </li>
+        {else/}
+        <li class="layui-nav-item phone-nav-icon" id="phone-login" lay-unselect>
+            <a href="javascript:loginShow();"><img src="__IMG__/user.svg"></a>
+        </li>
+        {/if}
+        <li id="phone-nav-cat" lay-unselect>
+            <span class="c-nav-r-btn J-qcTopNavMenu"> <span></span> <span></span> <span></span> </span>
+        </li>
+    </ul>
+</div>
+<input type="hidden" id="cat_id" value="{$cat_id?$cat_id:'0'}">

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传图片</title>
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-inline">
+            <button type="button" class="layui-btn" id="img_select_btn">
+                <i class="layui-icon layui-icon-picture"></i>选择图片
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button type="button" class="layui-btn" id="img_upload_btn">
+                <i class="layui-icon layui-icon-upload-drag"></i>确认上传
+            </button>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-form-mid layui-word-aux">图片大小不能超过2M</div>
+        </div>
+    </div>
+    <div class="layui-row">
+        <p>预览图：</p>
+        <div class="layui-upload-list" id="preview">
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script>
+    var upload = layui.upload; //得到 upload 对象
+    //创建一个上传组件
+    upload.render({
+        elem: '#img_select_btn',
+        url: '{:url("image/imgAdd")}',
+        accept: 'images', //允许上传的文件类型
+        size: 2048, //最大允许上传的文件大小,单位kb
+        auto: false,
+        bindAction: '#img_upload_btn',
+        choose: function (obj) {
+            //预读本地文件示例，不支持ie8
+            obj.preview(function (index, file, result) {
+                var img_obj = document.createElement('img');
+                img_obj.src = result;
+                img_obj.alt = file.name;
+                img_obj.style.height = '150px';
+                img_obj.className = 'layui-upload-img';
+                var preview_obj = document.getElementById('preview');
+                preview_obj.innerHTML = '';
+                preview_obj.appendChild(img_obj);
+            });
+        },
+        before: function (obj) {
+            console.log(obj);
+            layer.load();
+        },
+        done: function (res, index, upload) { //上传后的回调
+            console.log(res);
+            if (res.code == 1) {
+                layer.msg(res.msg, {icon: 1, time: 1500});
+                setTimeout('history.go(0)', 1500);
+            } else {
+                layer.msg(res.msg, {icon: 2});
+            }
+            layer.closeAll('loading');
+        },
+        error: function (index, upload) {
+            layer.closeAll('loading'); //关闭loading
+        }
+    })
+</script>

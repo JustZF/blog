@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>博客后台</title>
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+    <script src="__STATIC__/js/jquery.min.js"></script>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo" style="font-size: 23px;">顺新博客后台</div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    {$Request.session.admin.name}
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;" onclick="getMainHtml(this)" data-url="{:url('admin/infoEdit')}">基本资料</a>
+                    </dd>
+                    <dd><a href="javascript:;" onclick="getMainHtml(this)" data-url="{:url('admin/pwdEdit')}">密码修改</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="javascript:logout();">注销</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="">
+                <li class="layui-nav-item layui-this"><a href="javascript:;"
+                                                         onclick="getMainHtml(this)" data-url="{:url('admin/index')}"
+                                                         id="admin_index"><i
+                        class="layui-icon layui-icon-home"></i> 首页</a></li>
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;"><i class="layui-icon layui-icon-read"></i> 内容管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="getMainHtml(this)" data-url="{:url('article/artList')}">&nbsp;&nbsp;▪&nbsp;文章管理</a>
+                        </dd>
+                        <dd><a href="javascript:;" onclick="getMainHtml(this)" data-url="{:url('cat/catList')}">&nbsp;&nbsp;▪&nbsp;栏目管理</a>
+                        </dd>
+                        <dd><a href="javascript:;" onclick="getMainHtml(this)" data-url="{:url('label/labelList')}">&nbsp;&nbsp;▪&nbsp;标签管理</a>
+                        </dd>
+                        <dd><a href="javascript:;" onclick="layer.msg('功能完善中……');return false;getMainHtml(this)"
+                               data-url="">&nbsp;&nbsp;▪&nbsp;评论管理</a>
+                        </dd>
+                        <dd><a href="javascript:;" onclick="layer.msg('功能完善中……');return false;getMainHtml(this)"
+                               data-url="./leave_msg_list.html">&nbsp;&nbsp;▪&nbsp;留言管理</a>
+                        </dd>
+                        <dd><a href="javascript:;" onclick="getMainHtml(this)" data-url="{:url('link/linkList')}">&nbsp;&nbsp;▪&nbsp;友链管理</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;"><i class="layui-icon layui-icon-user"></i> 用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="getMainHtml(this)" data-url="{:url('user/userList')}">&nbsp;&nbsp;▪&nbsp;用户列表</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;"><i class="layui-icon layui-icon-file"></i> 文件管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="getMainHtml(this)" data-url="{:url('Image/imgList')}">&nbsp;&nbsp;▪&nbsp;图片管理</a>
+                        </dd>
+                        <dd><a href="javascript:;" onclick="getMainHtml(this)" data-url="{:url('File/showImgPath')}">&nbsp;&nbsp;▪&nbsp;图片管理(新)</a>
+                        </dd>
+                        <dd><a href="javascript:;" onclick="layer.msg('功能完善中……');return false;getMainHtml(this)" data-url="{:url('File/showAttachmentPath')}">&nbsp;&nbsp;▪&nbsp;附件管理</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-set"></i> 系统管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="layer.msg('功能完善中……');return false;getMainHtml(this)">&nbsp;&nbsp;▪&nbsp;数据统计</a>
+                        </dd>
+                        <dd><a href="javascript:;" onclick="layer.msg('功能完善中……');return false;getMainHtml(this)"
+                               data-url="./login_log.html">&nbsp;&nbsp;▪&nbsp;登录日志</a>
+                        </dd>
+                        <dd><a href="javascript:;" onclick="layer.msg('功能完善中……');return false;getMainHtml(this)"
+                               data-url="./cache.html">&nbsp;&nbsp;▪&nbsp;缓存管理</a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-body" id="main" style="padding: 0 10px;">
+        <!-- 内容主体区域 -->
+
+    </div>
+    <div class="layui-footer">
+        shunxin66.com
+    </div>
+</div>
+</body>
+</html>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script src="__STATIC__/js/common.js"></script>
+<script src="__STATIC__/js/echarts.js"></script>
+<script>
+    document.body.onload = function () {
+        getMainHtml(document.getElementById('admin_index'));
+    };
+
+    function init() {
+        layui.use('element', function () {
+            let element = layui.element;
+        });
+
+        layui.use('laydate', function () {
+            let laydate = layui.laydate;
+            let date = new Date();
+            laydate.render({
+                elem: '#input_date_space',
+                type: 'date',
+                range: '至',
+                max: date.getTime()
+            });
+        });
+
+        layui.use('laypage', function () {
+            let laypage = layui.laypage;
+            let count = 0, limit = 8, url = '', curr = 1;
+            try {
+                count = document.getElementById('count').value;
+                curr = document.getElementById('curr').value;
+                limit = document.getElementById('limit').value;
+                url = document.getElementById('url').value;
+            } catch (e) {
+            }
+            //执行一个laypage实例
+            laypage.render({
+                elem: 'page',
+                curr: curr,
+                count: count, //数据总数，从服务端得到
+                limit: limit,
+                limits: [10, 15, 20],
+                layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
+                jump: function (obj, first) {
+                    //首次不执行
+                    if (!first) {
+                        getMainHtml(url + '?page=' + obj.curr + '&list_row=' + obj.limit);
+                    }
+                }
+            });
+        });
+
+        let today = document.getElementById("today");
+        if (today) {
+            let today_Chart = echarts.init(today);
+            today_option = {
+                legend: {
+                    data: ['PV数', 'UP数', 'IP数', '留言、评论数']
+                },
+                xAxis: {
+                    name: '时间',
+                    type: 'category',
+                    data: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
+                },
+                yAxis: {
+                    name: '数量',
+                    type: 'value'
+                },
+                series: [{
+                    name: 'PV数',
+                    data: [820, 932, 0, 934, 11, 1330, 1320],
+                    type: 'line'
+                }, {
+                    name: 'UP数',
+                    data: [820, 932, 1, 934, 1290, 22, 1320],
+                    type: 'line'
+                }, {
+                    name: 'IP数',
+                    data: [820, 932, 2, 934, 1290, 1330, 33],
+                    type: 'line'
+                }, {
+                    name: '留言、评论数',
+                    data: [5, 6, 7, 8, 9, 10],
+                    type: 'line'
+                }],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        animation: false
+                    }
+                },
+            };
+            if (today_option && typeof today_option === "object") {
+                today_Chart.setOption(today_option, true);
+            }
+        }
+    }
+
+    function getMainHtml(obj) {
+        let index = layer.load();
+        let res = ajax(null, typeof obj == 'string' ? obj : obj.getAttribute('data-url'), 'get');
+        if (res) {
+            document.getElementById('main').innerHTML = res;
+            init();
+        }
+        layer.close(index);
+    }
+
+    function logout() {
+        ajaxSubmit(null, "{:url('admin/logout',['_ajax'=>1])}", 'GET');
+    }
+
+    /**
+     * 确认删除提示
+     * @param callback [删除函数]
+     * @param id [删除记录id]
+     */
+    function checkDel(callback, id) {
+        let index = layer.open({
+            title: '警告',
+            content: '正在进行删除，请确认！',
+            btn: ['确定', '取消'],
+            yes: function () {
+                layer.close(index);
+                callback(id);
+            }
+        });
+    }
+
+    function artSearch() {
+        getMainHtml('{:url("article/artList")}?title=' + document.getElementById('title').value);
+    }
+
+    function artAdd() {
+        layer.open({
+            type: 2,
+            title: '内容管理 - 添加文章',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '{:url("article/artAdd")}',
+            end: function () {
+                getMainHtml(document.getElementById('url').value);
+            }
+        });
+    }
+
+    function artEdit(art_id) {
+        layer.open({
+            type: 2,
+            title: '内容管理 - 编辑文章',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '{:url("article/artEdit")}?art_id=' + art_id,
+            end: function () {
+                getMainHtml(document.getElementById('url').value);
+            }
+        });
+    }
+
+    function artDel(art_id) {
+        let index = layer.load();
+        let res = ajax(null, '{:url("article/artDel",["_ajax"=>1])}?art_id=' + art_id, 'get');
+        if (res) {
+            let data = JSON.parse(res);
+            if (data.code == 1) {
+                layer.msg(data.msg, {icon: 1});
+                getMainHtml(document.getElementById('url').value);
+            } else {
+                layer.msg(data.msg, {icon: 2});
+            }
+        }
+        layer.close(index);
+    }
+
+    function catAdd() {
+        layer.open({
+            type: 2,
+            title: '内容管理 - 添加栏目',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '{:url("cat/catAdd")}',
+            end: function () {
+                getMainHtml(document.getElementById('url').value);
+            }
+        });
+    }
+
+    function catEdit(cat_id) {
+        layer.open({
+            type: 2,
+            title: '内容管理 - 编辑栏目',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '{:url("cat/catEdit")}?cat_id=' + cat_id,
+            end: function () {
+                getMainHtml(document.getElementById('url').value);
+            }
+        });
+    }
+
+    function catDel(cat_id) {
+        let index = layer.load();
+        let res = ajax(null, '{:url("cat/catDel",["_ajax"=>1])}?cat_id=' + cat_id, 'get');
+        if (res) {
+            let data = JSON.parse(res);
+            if (data.code == 1) {
+                layer.msg(data.msg, {icon: 1});
+                getMainHtml(document.getElementById('url').value);
+            } else {
+                layer.msg(data.msg, {icon: 2});
+            }
+        }
+        layer.close(index);
+    }
+
+    function catChildShow(parent_id, obj) {
+        obj.innerText = obj.innerText == '展开' ? '收起' : '展开';
+        $('.cat_parent_' + parent_id).toggle();
+    }
+
+    function labelAdd() {
+        layer.open({
+            type: 2,
+            title: '内容管理 - 添加标签',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '300px'],
+            content: '{:url("label/labelAdd")}',
+            end: function () {
+                getMainHtml(document.getElementById('url').value);
+            }
+        });
+    }
+
+    function labelEdit(label_id) {
+        layer.open({
+            type: 2,
+            title: '内容管理 - 编辑标签',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '300px'],
+            content: '{:url("label/labelEdit")}?label_id=' + label_id,
+            end: function () {
+                getMainHtml(document.getElementById('url').value);
+            }
+        });
+    }
+
+    function labelDel(label_id) {
+        let index = layer.load();
+        let res = ajax(null, '{:url("label/labelDel",["_ajax"=>1])}?label_id=' + label_id, 'get');
+        if (res) {
+            let data = JSON.parse(res);
+            if (data.code == 1) {
+                layer.msg(data.msg, {icon: 1});
+                getMainHtml(document.getElementById('url').value);
+            } else {
+                layer.msg(data.msg, {icon: 2});
+            }
+        }
+        layer.close(index);
+    }
+
+    function linkAdd() {
+        layer.open({
+            type: 2,
+            title: '内容管理 - 添加友链',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['600px', '320px'],
+            content: '{:url("link/linkAdd")}',
+            end: function () {
+                getMainHtml(document.getElementById('url').value);
+            }
+        });
+    }
+
+    function linkEdit(link_id) {
+        layer.open({
+            type: 2,
+            title: '内容管理 - 编辑友链',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['600px', '320px'],
+            content: '{:url("link/linkEdit")}?link_id=' + link_id,
+            end: function () {
+                getMainHtml(document.getElementById('url').value);
+            }
+        });
+    }
+
+    function linkDel(link_id) {
+        let index = layer.load();
+        let res = ajax(null, '{:url("link/linkDel",["_ajax"=>1])}?link_id=' + link_id, 'get');
+        if (res) {
+            let data = JSON.parse(res);
+            if (data.code == 1) {
+                layer.msg(data.msg, {icon: 1});
+                getMainHtml(document.getElementById('url').value);
+            } else {
+                layer.msg(data.msg, {icon: 2});
+            }
+        }
+        layer.close(index);
+    }
+
+    /******** 图片重做（即将删除） ********/
+    function imgAdd() {
+        layer.open({
+            type: 2,
+            title: '文件管理 - 上传图片',
+            shadeClose: true,
+            shade: false,
+            maxmin: false, //开启最大化最小化按钮
+            area: ['600px', '280px'],
+            content: '{:url("image/imgAdd")}',
+            end: function () {
+                getMainHtml(document.getElementById('url').value);
+            }
+        });
+    }
+
+    function imgShow(img_id) {
+        layer.open({
+            type: 2,
+            title: '内容管理 - 查看图片',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '{:url("image/imgShow")}?img_id=' + img_id
+        });
+    }
+
+    /**** *******/
+
+    function showFile(filename) {
+        layer.open({
+            type: 2,
+            title: '查看文件',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['600px', '600px'],
+            content: filename
+        });
+    }
+
+    /**
+     * 新建文件夹
+     */
+    function folderAdd() {
+        let tr = document.createElement('tr');
+        let td1 = document.createElement('td');
+        let td2 = document.createElement('td');
+        let td3 = document.createElement('td');
+        let td4 = document.createElement('td');
+        let img = document.createElement('img');
+        img.src = '__IMG__/folder.svg';
+        let input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'layui-input';
+        input.style.display = 'inline-block';
+        input.style.width = '65%';
+        input.style.height = '20px';
+        input.value = '新建文件夹';
+        let btn_ok = document.createElement('button');
+        btn_ok.className = 'layui-btn layui-btn-xs';
+        btn_ok.innerText = '确定';
+        btn_ok.style.marginLeft = '5px';
+        let btn_cancel = document.createElement('button');
+        btn_cancel.className = 'layui-btn layui-btn-xs layui-btn-danger';
+        btn_cancel.innerText = '取消';
+        btn_cancel.style.marginLeft = '1px';
+        $(td1).append(img, input, btn_ok, btn_cancel);
+        $(tr).append(td1, td2, td3, td4);
+        $('.path-tbody').append(tr);
+        input.setSelectionRange(0, input.value.length);
+        input.focus();
+        $('.folder-add-btn').addClass('layui-btn-disabled');
+        $(btn_ok).click(function () {
+            let formData = new FormData();
+            formData.append('folder_name', document.getElementById('curr_path').value + input.value);
+            let res = ajax(formData, '{:url("File/mkFolder",["_ajax"=>1])}', 'post');
+            if (res) {
+                let data = JSON.parse(res);
+                if (data.code == 1) {
+                    getMainHtml(document.getElementById('url').value);
+                } else {
+                    let msg = data.msg ? data.msg : '操作失败';
+                    layer.msg(msg, {'icon': 2});
+                    input.setSelectionRange(0, input.value.length);
+                    input.focus();
+                }
+            }
+        });
+        $(btn_cancel).click(function () {
+            $(tr).remove();
+            $('.folder-add-btn').removeClass('layui-btn-disabled');
+        });
+    }
+
+    /**
+     * 删除路径文件或文件夹
+     * @param path [需要删除的路径]
+     */
+    function rmPath(path) {
+        let formData = new FormData();
+        formData.append('path', path);
+        let res = ajax(formData, '{:url("File/rmPath",["_ajax"=>1])}', 'post');
+        if (res) {
+            let data = JSON.parse(res);
+            if (data.code == 1) {
+                getMainHtml(document.getElementById('url').value);
+            } else {
+                let msg = data.msg ? data.msg : '操作失败';
+                layer.msg(msg, {'icon': 2});
+            }
+        }
+    }
+
+    function imgNameEdit(obj, img_id) {
+        let name = obj.value;
+        let old_name = obj.getAttribute('verify');
+        if (name != old_name) {
+            layer.confirm('将图片名修改为:' + name + '？', {icon: 3, title: '图片名修改提示'}, function (index) {
+                let formData = new FormData();
+                formData.append('name', name);
+                let res = ajax(formData, '{:url("image/imgEdit",["_ajax"=>1])}?img_id=' + img_id, 'post');
+                if (res) {
+                    let data = JSON.parse(res);
+                    if (data.code == 1) {
+                        obj.setAttribute('verify', name);
+                        layer.msg(data.msg, {'icon': 1});
+                    } else {
+                        layer.msg(data.msg, {'icon': 2});
+                    }
+                }
+                layer.close(index);
+            }, function () {
+                obj.value = old_name;
+            });
+        }
+    }
+
+    function imgSearch() {
+        let img_name = document.getElementById('img_name').value;
+        getMainHtml('{:url("image/imgList")}?img_name=' + img_name);
+    }
+
+    function imgDel(img_id) {
+        let index = layer.load();
+        let res = ajax(null, '{:url("image/imgDel",["_ajax"=>1])}?img_id=' + img_id, 'get');
+        console.log('{:url("image/imgDel",["_ajax"=>1])}?img_id=' + img_id);
+        console.log(res);
+        if (res) {
+            let data = JSON.parse(res);
+            if (data.code == 1) {
+                getMainHtml('{:url("image/imgList")}');
+                layer.msg('删除成功', {icon: 1});
+            } else {
+                layer.msg('删除失败', {icon: 2});
+            }
+        }
+        layer.close(index);
+    }
+
+    function pwdEdit() {
+        ajaxSubmit(document.getElementById('pwd_edit_form'), '{:url("admin/pwdEdit",["_ajax"=>1])}', 'post')
+    }
+
+    function adminInfoEdit() {
+        ajaxSubmit(document.getElementById('admin_info_edit_form'), '{:url("admin/infoEdit",["_ajax"=>1])}', 'post');
+    }
+</script>

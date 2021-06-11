@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+    <link rel="stylesheet" href="__CSS__/l-blog.css">
+    <script src="__JS__/jquery.min.js"></script>
+</head>
+<body style="background-color: #FFFFFF;">
+<div id="register_panel">
+    <form id="login_email_form">
+        <div class="layui-row">
+            <div class="layui-row">
+                <input class="layui-input" name="email" id="email" placeholder="邮箱">
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-xs7">
+                    <input class="layui-input" name="captcha" id="captcha" placeholder="请输入验证码">
+                </div>
+                <div class="layui-col-xs5">
+                    <img class="right" src="{:captcha_src()}" style="height: 38px;width: 108px;"
+                         onclick="this.src='{:captcha_src()}?'+Math.random()">
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-xs7">
+                    <input class="layui-input" name="email_captcha" placeholder="请输入邮箱验证码">
+                </div>
+                <div class="layui-col-xs5">
+                    <button class="layui-btn layui-btn-primary right" id="btn_captcha" type="button"
+                            onclick="getEmailCaptcha()">获取验证码
+                    </button>
+                </div>
+            </div>
+            <div class="layui-row">
+                <button type="button" class="layui-btn sign-btn" disabled onclick="loginByEmail()">登陆</button>
+            </div>
+            <div class="layui-row">
+                <a href="javascript:forgetPwd();" class="right">重置密码</a><span class="right">&nbsp;&nbsp;</span>
+                <a href="javascript:loginByPwdShow();" class="left">密码登陆</a>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs4">
+                <hr class="layui-bg-gray">
+            </div>
+            <div class="layui-col-xs4 text-center">
+                其他登录方式
+            </div>
+            <div class="layui-col-xs4">
+                <hr class="layui-bg-gray">
+            </div>
+        </div>
+        <div class="layui-row">
+            {include file="user/other_login_way"}
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script src="__JS__/common.js"></script>
+<script src="__JS__/l-blog.js"></script>
+<script src="__JS__/check.js"></script>
+<script>
+    function loginByEmail() {
+        let formData = new FormData(document.getElementById('login_email_form'));
+        let res = ajax(formData, '{:url("user/loginByEmail",["_ajax"=>1])}', 'post');
+        if (res) {
+            let data = JSON.parse(res);
+            if (data.code == 1) {
+                parent.layer.msg('登陆成功', {icon: 1});
+                setTimeout('parent.history.go(0)', 1500);
+            } else {
+                parent.layer.msg(data.msg);
+            }
+        }
+    }
+
+    /**
+     * 获取邮箱验证码
+     * @return {boolean}
+     */
+    function getEmailCaptcha() {
+        let email = $('#email').val();
+        let res = checkEmail(email);
+        if (true !== res) {
+            parent.layer.msg(res);
+            return false;
+        }
+        let captcha = $('#captcha').val();
+        if (captcha.length != 4) {
+            parent.layer.msg('验证码长度为4');
+            return false;
+        }
+        let formData = new FormData();
+        formData.append('email', email);
+        formData.append('captcha', captcha);
+        res = ajax(formData, '{:url("user/getEmailCode",["_ajax"=>1])}', 'post');
+        if (res) {
+            let data = JSON.parse(res);
+            if (data.code == 1) {
+                btnTimer($('#btn_captcha'), 60, '获取验证码');
+                $('.sign-btn').removeAttr('disabled')
+            }
+            parent.layer.msg(data.msg);
+        }
+    }
+
+    //按钮倒计时
+    function btnTimer(jqObj, time, text) {
+        this.jqObj = jqObj;
+        this.time = time;
+        this.text = text;
+        this.setStatus = function () {
+            this.time--;
+            if (this.time > 0) {
+                this.jqObj.text(this.time);
+                this.jqObj.attr('disabled', '');
+            } else {
+                clearInterval(this.timer);
+                this.jqObj.text(this.text);
+                this.jqObj.removeAttr('disabled');
+            }
+        };
+        this.timer = setInterval(this.setStatus, 1000);
+    }
+</script>

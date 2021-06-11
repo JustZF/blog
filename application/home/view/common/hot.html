@@ -1,0 +1,13 @@
+<div class="panel">
+    <div class="layui-row">
+        <i class="layui-icon layui-icon-fire"><span>热文推荐</span></i>
+    </div>
+    <hr class="layui-bg-green">
+    <div>
+        <ul class="right-list">
+            {foreach name="hot_list" item="v"}
+            <li>&nbsp;&nbsp;•&nbsp;&nbsp;<a href="{:url('Article/artShow',['art_id'=>$v.id])}">{$v.title}</a></li>
+            {/foreach}
+        </ul>
+    </div>
+</div>

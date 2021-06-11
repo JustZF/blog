@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>博客登录</title>
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-col-sm6 layui-col-sm-offset4" style="margin-top:150px;">
+    <h1 style="margin-bottom: 10px;">博客系统登录</h1>
+    <form class="layui-form layui-form-pane" id="login_form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-inline"><input type="text" class="layui-input" name="username" id="username"
+                                                   placeholder="请输入用户名">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline"><input type="password" class="layui-input" name="password" id="password"
+                                                   placeholder="请输入密码"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">验证码</label>
+            <div class="layui-input-inline"><input type="text" class="layui-input" name="captcha" id="captcha"
+                                                   placeholder="请输入验证码">
+            </div>
+            <div class="layui-input-inline"><img src="{:captcha_src()}" height="40"
+                                                 onclick="reCaptcha()" id="captcha_img">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <button type="button" class="layui-btn" onclick="login()">登录</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script>
+
+    function check() {
+        if (document.getElementById('username').value.length == 0) {
+            return '用户名不能为空';
+        } else if (document.getElementById('password').value.length == 0) {
+            return '密码不能为空';
+        } else if (document.getElementById('captcha').value.length != 4) {
+            return '验证码为4位';
+        }
+        return true;
+    }
+
+    function login() {
+        $msg = check();
+        if ($msg !== true) {
+            layer.msg($msg)
+        } else {
+            var index = layer.load();
+            var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    var data = JSON.parse(xmlhttp.responseText);
+                    if (data.code == 1) {
+                        layer.msg('登录成功，即将跳转到新页面……', {'icon': 1, 'time': 2000});
+                        (function (url) {
+                            setTimeout('location.href = "' + url + '"', 2000);
+                        })(data.url);
+                    } else {
+                        layer.msg(data.msg);
+                        reCaptcha();
+                    }
+                }
+                layer.close(index);
+            }
+            var data = new FormData(document.getElementById('login_form'));
+            xmlhttp.open("POST", "{:url('admin/login',['_ajax'=>1])}", true);
+            xmlhttp.send(data);
+        }
+    }
+
+    /**
+     * 刷新验证码
+     */
+    function reCaptcha() {
+        document.getElementById('captcha_img').src = '{:captcha_src()}?' + Math.random();
+    }
+</script>

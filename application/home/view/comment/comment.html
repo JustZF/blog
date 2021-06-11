@@ -1,0 +1,53 @@
+<div class="layui-row"><i class="layui-icon layui-icon-dialogue"><span>留言评论</span></i></div>
+<hr class="layui-bg-green">
+<div class="layui-row">
+    <form id="comment_form">
+        <div style="margin-bottom: 5px;">
+            <textarea class="layui-textarea" name="content" id="comment_textarea" maxlength="250"></textarea>
+            <input type="hidden" name="art_id" value="{$art.id?$art.id:'0'}">
+            <input type="hidden" name="parent_id" value="0">
+            <input type="hidden" name="to_user_id" value="0">
+        </div>
+        <div>
+            <button class="layui-btn" type="button" id="comment_btn"></button>
+        </div>
+    </form>
+</div>
+<!--留言记录-->
+<div class="layui-row" id="main">
+    {include file="comment/comment_list"}
+</div>
+<div id="reply-div" style="display: none;">
+
+</div>
+<script src="__JS__/common.js"></script>
+<script>
+    $('#comment_btn').click(function () {
+        let formData = new FormData(document.getElementById('comment_form'));
+        let res = ajax(formData, '{:url("comment/commentAdd",["_ajax"=>1])}', 'post');
+        if (res) {
+            let data = JSON.parse(res);
+            if (data.code == 1) {
+                layer.msg('留言成功');
+                document.getElementById('comment_textarea').value = '';
+                getMainHtml('{:url("comment/commentList",["art_id"=>isset($art.id)?$art.id:"0"])}');
+            } else {
+                layer.msg(data.msg);
+            }
+        }
+    });
+
+    function reply() {
+        let formData = new FormData(document.getElementById('reply-form'));
+        let res = ajax(formData, '{:url("comment/commentAdd",["_ajax"=>1])}', 'post');
+        if (res) {
+            let data = JSON.parse(res);
+            if (data.code == 1) {
+                layer.msg('留言成功');
+                getMainHtml('{:url("comment/commentList",["art_id"=>isset($art.id)?$art.id:"0"])}?page=' + $('#curr').val() + '&list_row='+$('#limit').val());
+            } else {
+                layer.msg(data.msg);
+            }
+        }
+    }
+</script>

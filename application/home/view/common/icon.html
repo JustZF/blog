@@ -1,0 +1,13 @@
+<div class="panel">
+    <div class="layui-row">
+        <i class="layui-icon layui-icon-star"><span>博主标签</span></i>
+    </div>
+    <hr class="layui-bg-green">
+    <div>
+        <ul class="right-list">
+            {foreach name="mood_list" item="v"}
+            <li style="display: contents;"><span class="layui-btn layui-btn-xs layui-btn-radius {$v.label}" style="margin-bottom: 2px;">{$v.name}</span></li>
+            {/foreach}
+        </ul>
+    </div>
+</div>

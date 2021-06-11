@@ -1,0 +1,66 @@
+<fieldset class="layui-elem-field layui-field-title">
+    <legend> 内容管理 - 栏目列表</legend>
+    <div class="layui-field-box">
+        <div class="layui-form">
+            <div class="layui-form-item">
+                <button class="layui-btn layui-btn-xs" onclick="catAdd()" style="float: right;"><i
+                        class="layui-icon layui-icon-add-1"></i>添加栏目
+                </button>
+            </div>
+        </div>
+        <table class="layui-table" lay-skin="line">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>栏目名</th>
+                <th>排序</th>
+                <th>显示</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="cat_list" item="v"}
+            <tr class="cat_{$v.id} cat_parent_0">
+                <td>{$v.id}</td>
+                <td>{$v.cat_name}</td>
+                <td>{$v.order}</td>
+                <td>{$v.is_show==1?'是':'否'}</td>
+                <td>
+                    <button class="layui-btn layui-btn-xs" onclick="catEdit('{$v.id}')">编辑
+                    </button>
+                    <button class="layui-btn layui-btn-danger layui-btn-xs" onclick="checkDel(catDel,'{$v.id}')">
+                        删除
+                    </button>
+                    <button class="layui-btn layui-btn-primary layui-btn-xs" onclick="catChildShow('{$v.id}',this)">展开
+                    </button>
+                </td>
+            </tr>
+            {foreach name="v.child" key="kk" item="vv"}
+            <tr class="cat_{$vv.id} cat_parent_{$v.id}" style="display: none;">
+                <td>{$vv.id}</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---{$vv.cat_name}</td>
+                <td>{$vv.order}</td>
+                <td>{$vv.is_show==1?'是':'否'}</td>
+                <td>
+                    <button class="layui-btn layui-btn-xs" onclick="catEdit('{$vv.id}')">编辑
+                    </button>
+                    <button class="layui-btn layui-btn-danger layui-btn-xs" onclick="checkDel(catDel,'{$vv.id}')">
+                        删除
+                    </button>
+                </td>
+            </tr>
+            {/foreach}
+            {/foreach}
+            </tbody>
+        </table>
+        <input type="hidden" id="count" value="{$count}">
+        <input type="hidden" id="curr" value="{$page}">
+        <input type="hidden" id="limit" value="{$list_row}">
+        <input type="hidden" id="url" value="{:url('cat/catList')}">
+        <div class="layui-row">
+            <div id="page"></div>
+        </div>
+    </div>
+</fieldset>
+<script>
+</script>

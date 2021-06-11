@@ -1,0 +1,60 @@
+{if (!empty($art_list))}
+{foreach name="art_list" item="v"}
+<div class="panel">
+    <div class="layui-row">
+        <div class="layui-col-space10">
+            <div class="layui-col-xs8">
+                <h1 class="article-title layui-hide-xs">
+                    <a href="{:url('article/artShow',['art_id'=>$v.id])}">{$v.title}</a>
+                </h1>
+                <div class="layui-row article-info layui-hide-xs" style="color: #999aaa;
+                word-break: break-all;height: 60px">
+                    {$v.val}
+                </div>
+                {if (!empty($v.marks))}
+                <div class="layui-row article-info layui-hide-xs">
+                    {foreach name="v.marks" item="v1"}
+                        <span class="layui-btn  layui-btn-xs layui-btn-radius layui-btn-normal">{$v1}</span>
+                    {/foreach}
+                </div>
+                {/if}
+                <div class="layui-row article-info layui-hide-xs">
+                    <i class="layui-icon layui-icon-username"><span>{$v.author}</span>&nbsp;&nbsp;</i>
+                    
+                    <i class="layui-icon layui-icon-date"><span class="article-time"
+                            data="{$v.add_time*1000}"></span>&nbsp;&nbsp;</i>
+                    <i class="layui-icon layui-icon-fire" style="color: #ff1e1e;"><span>{$v.view}</span></i>
+                    
+                </div>
+                
+                <h4 class="article-title layui-hide-sm">
+                    <a href="{:url('article/artShow',['art_id'=>$v.id])}">{$v.title}</a>
+                </h4>
+                <div class="layui-row phone-article-info layui-hide-sm" style="color: #999aaa;
+                word-break: break-all;height: 30px;margin-bottom: 15px;">
+                    {$v.val}
+                </div>
+                <div class="layui-row phone-article-info layui-hide-sm">
+                    <i class="layui-icon layui-icon-username"><span>{$v.author}</span>&nbsp;&nbsp;</i>
+                    <i class="layui-icon layui-icon-date"><span class="article-time"
+                            data="{$v.add_time*1000}"></span>&nbsp;&nbsp;</i>
+                    <i class="layui-icon layui-icon-fire" style="color: #ff1e1e;"><span>{$v.view}</span></i>
+                </div>
+            </div>
+            <div class="layui-col-xs4">
+                <img class="art_thu_img" lay-src="{$v.img_url}" width="100%">
+            </div>
+            <!-- <a href="{:url('article/artShow',['art_id'=>$v.id])}" class="layui-btn layui-btn-xs layui-hide-xs read-btn">阅读全文</a> -->
+        </div>
+    </div>
+</div>
+{/foreach}
+<input type="hidden" id="count" value="{$count}">
+<input type="hidden" id="curr" value="{$page}">
+<input type="hidden" id="limit" value="{$list_row}">
+<input type="hidden" id="url" value="{$url}">
+<input type="hidden" id="is_index" value="{$is_index}">
+<div class="layui-row" id="page"></div>
+{else/}
+<div class="panel">没有文章了</div>
+{/if}

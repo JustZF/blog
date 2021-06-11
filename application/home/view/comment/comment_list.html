@@ -1,0 +1,62 @@
+{foreach name="comment_list" item="v"}
+<div class="layui-row message">
+    <div class="layui-col-md1 layui-col-xs2 text-center">
+        <img src="{$v.head_img}" class="layui-nav-img">
+    </div>
+    <div class="layui-col-md11 layui-col-xs10">
+        <div class="layui-row">
+            <a class="nickname" href="javascript:void(0);">{$v.nickname}</a>&nbsp;&nbsp;<span
+                class="article-time add-info"
+                data="{$v.add_time*1000}"></span>
+        </div>
+        <div class="message-content">
+            {$v.content}
+        </div>
+        <div class="layui-row">
+            {if ($Think.session.user_id!=$v.user_id)}
+            <a class="reply-btn right" href="javascript:void(0);" parent-id="{$v.id}" to-user-id="{$v.user_id}">回复</a>
+            {else/}
+            <div style="height: 18px;"></div>
+            {/if}
+        </div>
+        {if (!empty($v.child))}
+        <ul class="reply-list">
+            {foreach name="v.child" item="vv"}
+            <li class="layui-row">
+                <div class="layui-inline left">
+                    <img src="{$vv.head_img}"
+                         class="layui-nav-img">
+                </div>
+                <div class="layui-inline layui-col-xs9 layui-col-sm10">
+                    <div class="layui-row leave-info">
+                        <a class="nickname" href="javascript:void(0);">{$vv.nickname}</a>&nbsp;&nbsp;<span
+                            class="add-info">回复&nbsp;&nbsp;<span
+                            class="nickname">{$vv.to_nickname}</span></span>
+                        <span class="article-time add-info" data="{$vv.add_time*1000}"></span>
+                    </div>
+                    <div class="message-content">
+                        {$vv.content}
+                    </div>
+                    <div class="layui-row">
+                        {if ($Think.session.user_id!=$vv.user_id)}
+                        <a class="reply-btn right" href="javascript:void(0);" parent-id="{$v.id}"
+                           to-user-id="{$vv.user_id}">回复</a>
+                        {else/}
+                        <div style="height: 18px;"></div>
+                        {/if}
+                    </div>
+                </div>
+            </li>
+            {/foreach}
+        </ul>
+        {/if}
+    </div>
+</div>
+{/foreach}
+{if (!empty($comment_list))}
+<div id="page"></div>
+<input type="hidden" id="count" value="{$count}">
+<input type="hidden" id="curr" value="{$page}">
+<input type="hidden" id="limit" value="{$list_row}">
+<input type="hidden" id="url" value="{$url}">
+{/if}

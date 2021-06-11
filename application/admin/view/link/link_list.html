@@ -1,0 +1,49 @@
+<fieldset class="layui-elem-field layui-field-title">
+    <legend> 内容管理 - 友链列表</legend>
+    <div class="layui-field-box">
+        <div class="layui-form">
+            <div class="layui-form-item">
+                <button class="layui-btn layui-btn-xs" onclick="linkAdd()" style="float: right;"><i
+                        class="layui-icon layui-icon-add-1"></i>添加友链
+                </button>
+            </div>
+        </div>
+        <table class="layui-table" lay-skin="line">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>友链名</th>
+                <th>地址</th>
+                <th>排序</th>
+                <th>显示</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="link_list" item="v"}
+            <tr>
+                <td>{$v.id}</td>
+                <td>{$v.link_name}</td>
+                <td>{$v.link_url}</td>
+                <td>{$v.order}</td>
+                <td>{$v.is_show==1?'是':'否'}</td>
+                <td>
+                    <button class="layui-btn layui-btn-xs" onclick="linkEdit('{$v.id}')">编辑
+                    </button>
+                    <button class="layui-btn layui-btn-danger layui-btn-xs" onclick="checkDel(linkDel,'{$v.id}')">
+                        删除
+                    </button>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <input type="hidden" id="count" value="{$count}">
+        <input type="hidden" id="curr" value="{$page}">
+        <input type="hidden" id="limit" value="{$list_row}">
+        <input type="hidden" id="url" value="{:url('link/linkList')}">
+        <div class="layui-row">
+            <div id="page"></div>
+        </div>
+    </div>
+</fieldset>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑文章</title>
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+</head>
+<body>
+<form class="layui-form" id="art_edit_form" style="padding: 10px 20px 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block"><input type="text" class="layui-input" name="title" placeholder="请输入文章标题"
+                                              value="{$art.title}"></div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">作者</label>
+        <div class="layui-input-block"><input type="text" class="layui-input" name="author" placeholder="请输入文章作者"
+                                              value="{$art.author}"></div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">封面图</label>
+        <div class="layui-input-block"><input type="text" class="layui-input" name="img_url" placeholder="请输入封面图链接"
+                                              value="{$art.img_url}"></div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">栏目</label>
+        <div class="layui-input-block">
+            <select name="cat_id">
+                {foreach name="cat_list" item="v"}
+                <option value="{$v.id}" {$art.cat_id==$v.id?='selected'}>{$v.cat_name}</option>
+                {if !empty($v.child)}
+                {foreach name="$v.child" item="vv"}
+                <option value="{$vv.id}" {$art.cat_id==$vv.id?='selected'}>————{$vv.cat_name}</option>
+                {/foreach}
+                {/if}
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标签</label>
+        <div class="layui-input-block">
+            {foreach name="label_list" item="v"}
+            <input type="checkbox" name="label_ids[]" title="{$v.label_name}" value="{$v.id}" {if
+                   (in_array($v.id,$art_label_ids))}checked{/if}>
+            {/foreach}
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">显示</label>
+        <div class="layui-input-block">
+            <input type="hidden" name="is_show" value="0">
+            <input type="checkbox" name="is_show" value="1" lay-skin="switch" {$art.is_show==1?='checked'}>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">热门</label>
+        <div class="layui-input-block">
+            <input type="hidden" name="is_hot" value="0">
+            <input type="checkbox" name="is_hot" value="1" lay-skin="switch" {$art.is_hot==1?='checked'}>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">内容</label>
+        <div class="layui-input-block">
+            <script id="container" name="content" type="text/plain">{$art.content}</script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" onclick="artEdit()">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script src="__STATIC__/js/common.js"></script>
+<script type="text/javascript" src="__STATIC__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__STATIC__/ueditor/ueditor.all.js"></script>
+<script type="text/javascript" src="__STATIC__/ueditor/ueditor.parse.min.js"></script>
+<script>
+    let ue = UE.getEditor('container');
+
+    function artEdit() {
+        let res = ajaxSubmit(document.getElementById('art_edit_form'), '{:url("article/artEdit",["art_id"=>$art.id,"_ajax"=>1])}', 'post');
+        if (res) {
+            closeOpen(1500);
+        }
+    }
+</script>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增友链</title>
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+</head>
+<body>
+<form class="layui-form" id="link_edit_form" style="padding: 10px 20px 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">友链名</label>
+        <div class="layui-input-block"><input type="text" name="link_name" class="layui-input" value="{$link.link_name}" placeholder="请输入友链名">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序</label>
+        <div class="layui-input-block"><input type="number" name="order" min="0" max="250" class="layui-input"
+                                              placeholder="数值越小越靠前" value="{$link.order}"></div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">显示</label>
+        <div class="layui-input-block">
+            <input type="hidden" name="is_show" value="0">
+            <input type="checkbox" name="is_show" value="1" lay-skin="switch" {$link.is_show==1?='checked'}>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">链接地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="link_url" class="layui-input" value="{$link.link_url}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" onclick="linkEdit()">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script src="__STATIC__/js/common.js"></script>
+<script>
+    layui.use('layedit', function () {
+        var layedit = layui.layedit;
+        layedit.build('editor', {
+            tool: ['strong' //加粗
+                , 'italic' //斜体
+                , 'underline' //下划线
+                , 'del' //删除线
+                , '|' //分割线
+                , 'left' //左对齐
+                , 'center' //居中对齐
+                , 'right' //右对齐
+                , 'link' //超链接
+                , 'unlink' //清除链接
+                , 'face' //表情
+            ]
+        }); //建立编辑器
+    });
+
+    function linkEdit() {
+        ajaxSubmit(document.getElementById('link_edit_form'),'{:url("link/linkEdit",["link_id"=>$link["id"],"_ajax"=>1])}','post')
+    }
+</script>

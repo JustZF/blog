@@ -1,0 +1,37 @@
+<fieldset class="layui-elem-field layui-field-title">
+    <legend> 基本资料 </legend>
+    <div class="layui-field-box">
+        <form id="admin_info_edit_form" class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" value="{$admin.username}" disabled>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" value="{$admin.role_name}" disabled>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="name" value="{$admin.name}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="email" value="{$admin.email}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-inline">
+                    <button type="button" class="layui-btn" onclick="adminInfoEdit()">确认</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</fieldset>

@@ -1,0 +1,57 @@
+<fieldset class="layui-elem-field layui-field-title">
+    <legend> 内容管理 - 文章列表</legend>
+    <div class="layui-field-box">
+        <div id="art_search" class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片搜索</label>
+                <div class="layui-input-inline"><input type="text" id="img_name" class="layui-input" placeholder="请输入图片名关键字" value="{$img_name}">
+                </div>
+                <button class="layui-btn" onclick="imgSearch()"><i
+                        class="layui-icon layui-icon-search"></i>搜索
+                </button>
+                <button class="layui-btn layui-btn-xs" onclick="imgAdd()" style="float: right;"><i
+                        class="layui-icon layui-icon-add-1"></i>上传图片
+                </button>
+            </div>
+        </div>
+        <table class="layui-table" id="img_table" lay-skin="line">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>图片名</th>
+                <th>预览图</th>
+                <th>上传时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="img_list" item="v"}
+            <tr class="img_row_{$v.id}">
+                <td>{$v.id}</td>
+                <td>
+                    <div class="layui-inline"><input type="text" class="layui-input" value="{$v.name}"
+                                                     verify="{$v.name}" onblur="imgNameEdit(this,'{$v.id}')">
+                    </div>
+                </td>
+                <td><img src="{$v.small_path}"></td>
+                <td>{$v.add_time}</td>
+                <td>
+                    <button class="layui-btn layui-btn-xs" onclick="imgShow('{$v.id}')">查看
+                    </button>
+                    <button class="layui-btn layui-btn-danger layui-btn-xs" onclick="checkDel(imgDel,'{$v.id}')">
+                        删除
+                    </button>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <input type="hidden" id="count" value="{$count}">
+        <input type="hidden" id="curr" value="{$page}">
+        <input type="hidden" id="limit" value="{$list_row}">
+        <input type="hidden" id="url" value="{$url}">
+        <div class="layui-row">
+            <div id="page"></div>
+        </div>
+    </div>
+</fieldset>

@@ -1,0 +1,21 @@
+<div class="layui-col-xs6 text-center">
+    <!--github-->
+    <a href="javascript:github();"><img src="__IMG__/github-black.svg"></a>
+</div>
+<div class="layui-col-xs6 text-center">
+    <!--qq-->
+    <a href="javascript:qq();"><i class="layui-icon layui-icon-login-qq"></i></a>
+</div>
+<script>
+    function github() {
+        layer.load(1);
+        setCookie('back_url', parent.location.href, 5 * 60);
+        parent.location.href = '{:url("user/loginByGithub",null,null,true)}';
+    }
+
+    function qq() {
+        layer.load(1);
+        setCookie('back_url', parent.location.href, 5 * 60);
+        parent.location.href = '{:url("user/loginByQQ",null,null,true)}';
+    }
+</script>

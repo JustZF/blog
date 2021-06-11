@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>博客首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+    <link rel="stylesheet" href="__CSS__/l-blog.css">
+    <script src="__JS__/jquery.min.js"></script>
+</head>
+<body>
+<!--导航-->
+{include file="common/nav"}
+
+<div class="layui-row">
+    <div class="layui-container">
+        <div class="crumbs">
+            <span class="layui-breadcrumb">
+                <a href="/">首页</a><a><cite></cite></a>
+            </span>
+        </div>
+        <div class="layui-col-space10">
+            <div class="layui-col-md8 layui-col-xs12" id="main">
+                {include file="article/art_list"}
+            </div>
+            <div class="layui-col-md4 layui-col-xs12">
+                <!--文章搜索-->
+                <div class="panel">
+                    <div class="layui-row">
+                        <i class="layui-icon layui-icon-search">
+                            <sapn>文章搜索</sapn>
+                        </i>
+                    </div>
+                    <hr class="layui-bg-green">
+                    <div>
+                        <div class="layui-input-inline">
+                            <input type="text" id="keyword" class="layui-input" placeholder="请输入关键字">
+                        </div>
+                        <div class="layui-input-inline">
+                            <button type="button" class="layui-btn" onclick="artSearch()">搜索</button>
+                        </div>
+                    </div>
+                </div>
+                <!--热文推荐-->
+                {include file="common/hot"}
+                <!--友情链接-->
+                {include file="common/link"}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--页脚-->
+{include file="common/footer"}
+
+</body>
+</html>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script src="__JS__/common.js"></script>
+<script src="__JS__/l-blog.js"></script>
+<script>
+    $('cite').text($('.layui-this>a:first').text());
+</script>

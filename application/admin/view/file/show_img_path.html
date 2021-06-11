@@ -1,0 +1,54 @@
+<fieldset class="layui-elem-field layui-field-title">
+    <legend> 图片管理/{$curr_path}</legend>
+    <div class="layui-field-box" style="padding-top: 0;">
+        <div class="layui-btn-group" style="float: right;margin-bottom: 5px;">
+            <button class="layui-btn layui-btn-xs  folder-add-btn" onclick="folderAdd()"><i
+                    class="layui-icon layui-icon-add-1"></i>新建文件夹
+            </button>
+            <button class="layui-btn layui-btn-xs" onclick="imgAdd()"><i
+                    class="layui-icon layui-icon-upload-drag"></i>上传图片
+            </button>
+        </div>
+        <table class="layui-table" lay-skin="line" lay-size="sm">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>修改日期</th>
+                <th>类型</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody class="path-tbody">
+            {foreach name="path_items" item="v"}
+            <tr>
+                <td>
+                    {if ($v.type=='dir')}
+                    <a href="javascript:getMainHtml('{:url('File/showImgPath')}?path={$v.path}');"
+                       style="display: block;" title="打开文件夹">
+                        <img src="__IMG__/folder.svg" alt="文件夹">
+                        {$v.name}
+                    </a>
+                    {else if (strchr($v.type,'image'))/}
+                    <a href="javascript:showFile('{$v.path}');" style="display: block;" title="查看文件">
+                        <img src="{$v.path}" alt="图片" style="height: 20px;">
+                        {$v.name}
+                    </a>
+                    {/if}
+                </td>
+                <td>{$v.time}</td>
+                <td>{$v.type}</td>
+                <td>
+                    {if ($v.name!='..')}
+                    <button class="layui-btn layui-btn-danger layui-btn-xs" onclick="checkDel(rmPath,'{:mb_strstr($v.path,"/image/")}')">
+                        删除
+                    </button>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+</fieldset>
+<input type="hidden" id="url" value="{$url}">
+<input type="hidden" id="curr_path" value="/image/{$curr_path}">

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片查看</title>
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-container">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>原图</legend>
+        <div class="layui-field-box">
+            <div class="layui-row">
+                <div class="layui-col-xs2"><label class="layui-form-label">图片链接：</label></div>
+                <div class="layui-col-xs10"><input type="text" class="layui-input" value="{$image.path}"></div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-xs12"><img src="{$image.path}" width="100%">
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>600*400</legend>
+        <div class="layui-field-box">
+            <div class="layui-row">
+                <div class="layui-col-xs2"><label class="layui-form-label">图片链接：</label></div>
+                <div class="layui-col-xs10"><input type="text" class="layui-input" value="{$image.middling_path}"></div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-xs12"><img src="{$image.middling_path}">
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>300*200</legend>
+        <div class="layui-field-box">
+            <div class="layui-row">
+                <div class="layui-col-xs2"><label class="layui-form-label">图片链接：</label></div>
+                <div class="layui-col-xs10"><input type="text" class="layui-input" value="{$image.small_path}"></div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-xs12"><img src="{$image.small_path}">
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+</body>
+</html>
+<script src="__STATIC__/layui/layui.all.js"></script>

@@ -1,0 +1,56 @@
+<fieldset class="layui-elem-field layui-field-title">
+    <legend> 内容管理 - 文章列表</legend>
+    <div class="layui-field-box">
+        <div id="art_search" class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label">文章搜索</label>
+                <div class="layui-input-inline"><input type="text" class="layui-input" id="title" placeholder="请输入文章名关键字" value="{$title}">
+                </div>
+                <button class="layui-btn" onclick="artSearch()"><i
+                        class="layui-icon layui-icon-search"></i>搜索
+                </button>
+                <button class="layui-btn layui-btn-xs" onclick="artAdd()" style="float: right;"><i
+                        class="layui-icon layui-icon-add-1"></i>添加文章
+                </button>
+
+            </div>
+        </div>
+        <table class="layui-table" lay-skin="line">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>文章名</th>
+                <th>栏目</th>
+                <th>作者</th>
+                <th>时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="art_list" item="v"}
+            <tr>
+                <td>{$v.id}</td>
+                <td><a href="{:url('home/article/artShow',['art_id'=>$v.id])}" target="_blank">{$v.title}</a></td>
+                <td>{$v.cat_name}</td>
+                <td>{$v.author}</td>
+                <td>{$v.add_time|date='Y-m-d H:i:s',###}</td>
+                <td>
+                    <button class="layui-btn layui-btn-xs" onclick="artEdit('{$v.id}')">编辑
+                    </button>
+                    <button class="layui-btn layui-btn-danger layui-btn-xs" onclick="checkDel(artDel,'{$v.id}')">
+                        删除
+                    </button>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <input type="hidden" id="count" value="{$count}">
+        <input type="hidden" id="curr" value="{$page}">
+        <input type="hidden" id="limit" value="{$list_row}">
+        <input type="hidden" id="url" value="{$url}">
+        <div class="layui-row">
+            <div id="page"></div>
+        </div>
+    </div>
+</fieldset>
