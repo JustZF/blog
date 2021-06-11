@@ -1,14 +1,13 @@
 # 基于ThinkPHP5的个人博客系统
 
 #### 项目介绍
-- github：https://github.com/dsx52220/blog
-- 码云：https://gitee.com/dsx52220/blog
+- github：https://github.com/wojiaofeituan/blog
+- 码云：https://gitee.com/zzf199407
 - 基于ThinkPHP5框架开发的简单个人博客系统
 - 前端基于layui框架，响应式前台
-![前台前端大屏幕](https://images.gitee.com/uploads/images/2018/0820/214649_081f8af6_1836201.jpeg "pc.jpg")
-![前台前端小屏幕](https://images.gitee.com/uploads/images/2018/0820/214748_d2182843_1836201.jpeg "mobile.jpg")
-- 加入了邮箱登录、GitHub账号登录和QQ登录
-- 初始帐号admin 密码123456
+![前台前端大屏幕](http://xldadmin.kahoul.top/1.png "pc.jpg")
+![前台前端小屏幕](http://xldadmin.kahoul.top/2.png "mobile.jpg")
+- 加入了邮箱登录、GitHub账号登录和QQ登录（请自行配置）
 
 #### 目录结构
 ~~~
